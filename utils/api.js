@@ -1,9 +1,20 @@
+import SInfo from 'react-native-sensitive-info';
+
+const options = {
+  sharedPreferencesName: 'tallerRN',
+  keychainService: 'tallerRN'
+};
+
 class Api {
-  static getHeaders = function(){
+  static getHeaders = async function() {
     const token = '';
+
+    const jwt = await SInfo.getItem('jwt', options);
+    const authHeader = 'Bearer ' + jwt;
+
     return {
       'Content-Type': 'application/json',
-      'Autorization': token,
+      'Authorization': authHeader,
     }
   }
 
@@ -24,7 +35,7 @@ class Api {
     const host = 'https://tranquil-garden-30231.herokuapp.com';
     const url = `${host}/${route}`;
 
-    const headers = this.getHeaders();
+    const headers = await this.getHeaders();
     const options = {
       method: method,
       headers: headers,
