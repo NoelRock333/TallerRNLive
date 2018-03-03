@@ -1,18 +1,41 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Button, ImageBackground } from 'react-native';
+
 
 class Login extends React.Component {
+  state = {
+    username: '',
+    password: '', 
+  }
+
+ login = () => {
+   const credentials = {
+     auth: {
+       email: this.state.username,
+       password: this.state.password,
+     }
+   }
+
+   this.props.screenProps.login(credentials);
+ }
+
   render() {
     return (
-      <View style={styles.loginWrapper}>
-        <Text style={{ color: 'purple' }}>Login</Text>
-        <View>
-          <Text>Usuario</Text>
-          <TextInput style={styles.textInput}/>
+      <View style={styles.body}>
+        <ImageBackground source={require('../../assets/background.jpg')} style={styles.titleBackground}>
+          <Text style={styles.title}>InstaApp</Text>
+        </ImageBackground>
+        <View style={styles.loginForm}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Usuario"
+            onChangeText={(text) => this.setState({ username: text }) }/>
 
-          <Text>Contraseña</Text>
-          <TextInput style={styles.textInput}/>
-          <Button title="Entrar" onPress={this.props.navegar} />
+          <TextInput
+            style={styles.textInput}
+            placeholder="Contraseña"
+            onChangeText={(text) => this.setState({ password: text }) }/>
+          <Button title="Entrar" onPress={() => this.login()} />
         </View>
       </View>
     )
@@ -20,15 +43,31 @@ class Login extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  loginWrapper: {
-    paddingTop: 20,
-    alignItems: 'center',
-    width: '100%',
+  body: {
     flex: 1,
+    backgroundColor: 'white',
+  },
+  loginForm: {
+    padding: 10,
+    paddingTop: 20
   },
   textInput: {
-    backgroundColor: 'gray',
-    padding: 10
+    backgroundColor: '#FAFAFA',
+    padding: 14,
+    borderWidth: 1,
+    borderColor: '#EBEBEB',
+    marginBottom: 10,
+    borderRadius: 7
+  },
+  titleBackground: {
+    width: '100%',
+    height: 180,
+    justifyContent: 'center'
+  },
+  title: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 30
   }
 })
 
